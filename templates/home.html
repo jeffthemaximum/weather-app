@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% block content %}
+	<div class="jumbo">
+		<h2>Welcome to the Jeff's Weather Homepage</h2>
+		<h3>Checkout the 7-day forecast for NYC</h3>
+		<table>
+		  <tr>
+		    <th>{{ weather[0][0] }}</th>
+		    <th>{{ weather[1][0] }}</th>
+		    <th>{{ weather[2][0] }}</th>
+		    <th>{{ weather[3][0] }}</th>
+		    <th>{{ weather[4][0] }}</th>
+		    <th>{{ weather[5][0] }}</th>
+		    <th>{{ weather[6][0] }}</th>
+		  </tr>
+		  <tr>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		    <td></td>
+		  </tr>
+		  <tr>
+		    <td>Hi Temp is: {{ weather[0][1] }}.<br> 
+		    	Low temp is: {{ weather[0][2] }}.<br> 
+		    	Forecast: {{ weather[0][3] }}.</td>
+		    <td>Hi Temp is: {{ weather[1][1] }}.<br> 
+		    	Low temp is: {{ weather[1][2] }}.<br> 
+		    	Forecast: {{ weather[1][3] }}.</td>
+		    <td>Hi Temp is: {{ weather[2][1] }}.<br> 
+		    	Low temp is: {{ weather[2][2] }}.<br> 
+		    	Forecast: {{ weather[2][3] }}.</td>
+		    <td>Hi Temp is: {{ weather[3][1] }}.<br> 
+		    	Low temp is: {{ weather[3][2] }}.<br> 
+		    	Forecast: {{ weather[3][3] }}.</td>
+		    <td>Hi Temp is: {{ weather[4][1] }}.<br> 
+		    	Low temp is: {{ weather[4][2] }}.<br> 
+		    	Forecast: {{ weather[4][3] }}.</td>
+		    <td>Hi Temp is: {{ weather[5][1] }}.<br> 
+		    	Low temp is: {{ weather[5][2] }}.<br> 
+		    	Forecast: {{ weather[5][3] }}.</td>
+		    <td>Hi Temp is: {{ weather[6][1] }}.<br> 
+		    	Low temp is: {{ weather[6][2] }}.<br> 
+		    	Forecast: {{ weather[6][3] }}.</td>
+		  </tr>
+		</table>
+	</div>
+{% endblock %}
