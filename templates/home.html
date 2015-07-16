@@ -4,20 +4,19 @@
 		<h2>Welcome to the Jeff's Weather Homepage</h2>
 		<h3>Checkout the 7-day forecast for NYC</h3>
 		<table>
+			<!-- file in table with day names -->
 			<tr>
 			{% for i in range(0,7) %}
 				<th>{{ weather[i][0] }}</th>
 			{% endfor %}
 			</tr>
+			<!-- fill in table with pics of weather -->
 			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
+			{% for i in range(0,7) %}
+				<td> <img width="100%" src="{{ weather[i][4] }}"</td>
+			{% endfor %}
 			</tr>
+			<!-- fill in text description of weather -->
 			<tr>
 			{% for i in range(0,7) %}
 				<td>Hi Temp is: {{ weather[i][1] }}.<br> 
