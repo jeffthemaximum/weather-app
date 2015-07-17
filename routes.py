@@ -8,15 +8,25 @@ import pudb
 
 app = Flask(__name__)
 app.config.from_object('config')
+possible_zips = range(10000, 100000)
+possible_zips_string = []
+for num in possible_zips:
+	possible_zips_string.append(str(num))
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
 	#pu.db
 	#set location to nyc by default, or set location to user-entered value
+	error = ""
+
 	if request.method == 'GET':
 		location = str(10025)
 	elif request.method == 'POST':
-		location = request.form['usr_zip']
+		if request.form['usr_zip'] not in possible_zips_string:
+			error = "That's not a valid zipcode, silly!"
+			location = str(10025)
+		else:
+			location = request.form['usr_zip']
 
 	#dict with links to image files
 	weather_desc = {"Clear": "../static/img/start-cycling-gl.jpg", 
@@ -53,7 +63,8 @@ def home():
 	#return weather_list to home.html so that home.html can make table
 	return render_template('home.html', 
 							weather = weather_list,
-							local = location)
+							local = location,
+							error = error)
 
 @app.route('/about')
 def about():
