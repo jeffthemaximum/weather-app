@@ -2,7 +2,11 @@
 {% block content %}
 	<div class="jumbo">
 		<h2>Welcome to the Jeff's Weather Homepage</h2>
-		<h3>Checkout the 7-day forecast for NYC</h3>
+		<h3>Checkout the 7-day forecast for {{ local }}</h3>
+		<h3>Enter your zip to see your weathers:<form action="/", id="zip", method='POST'>
+			<input type="text" name="usr_zip"><br>
+			<input type="submit" value="submit">
+		</form></h3>
 		<table>
 			<!-- file in table with day names -->
 			<tr>
@@ -27,5 +31,3 @@
 		</table>
 	</div>
 {% endblock %}
-
-4263ad1dd9572760

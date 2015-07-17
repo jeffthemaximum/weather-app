@@ -3,12 +3,20 @@ import json
 import time
 from datetime import datetime
 from time import mktime
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+import pudb
 
 app = Flask(__name__)
+app.config.from_object('config')
 
-@app.route('/')
+@app.route('/', methods=['POST', 'GET'])
 def home():
+	#pu.db
+	#set location to nyc by default, or set location to user-entered value
+	if request.method == 'GET':
+		location = str(10025)
+	elif request.method == 'POST':
+		location = request.form['usr_zip']
 
 	#dict with links to image files
 	weather_desc = {"Clear": "../static/img/start-cycling-gl.jpg", 
@@ -16,13 +24,15 @@ def home():
 					"Clouds": "../static/img/clouds.jpg",
 					"Overcast": "../static/img/overcast.png",
 					"Partly Cloudy": "../static/img/partcloud.jpg",
-					"Chance of a Thunderstorm": "../static/img/thunderstorm.jpg"}
+					"Chance of a Thunderstorm": "../static/img/thunderstorm.jpg",
+					"Mostly Cloudy": "../static/img/mostly-cloudy.jpg",
+					"Thunderstorm": "../static/img/actual-thunderstorm.jpg"}
 
 	#city_name = raw_input("please enter your city: ")
 	#country_code = raw_input("please enter your county: ")
 
 	#get json data from wunderground
-	response = urllib2.urlopen('http://api.wunderground.com/api/4263ad1dd9572760/forecast10day/q/10025.json')
+	response = urllib2.urlopen('http://api.wunderground.com/api/4263ad1dd9572760/forecast10day/q/' + location + '.json')
 	response_json = json.loads(response.read())
 
 	#setup empty array to fill in with weather json data
@@ -42,7 +52,8 @@ def home():
 
 	#return weather_list to home.html so that home.html can make table
 	return render_template('home.html', 
-							weather = weather_list)
+							weather = weather_list,
+							local = location)
 
 @app.route('/about')
 def about():
