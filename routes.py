@@ -36,7 +36,8 @@ def home():
 					"Partly Cloudy": "../static/img/partcloud.jpg",
 					"Chance of a Thunderstorm": "../static/img/thunderstorm.jpg",
 					"Mostly Cloudy": "../static/img/mostly-cloudy.jpg",
-					"Thunderstorm": "../static/img/actual-thunderstorm.jpg"}
+					"Thunderstorm": "../static/img/actual-thunderstorm.jpg",
+					"Chance of Rain": "../static/img/pitt.jpg"}
 
 	#city_name = raw_input("please enter your city: ")
 	#country_code = raw_input("please enter your county: ")
