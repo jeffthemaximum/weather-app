@@ -67,9 +67,9 @@ def home():
 							local = location,
 							error = error)
 
-@app.route('/about')
+@app.route('/radar')
 def about():
-	return render_template('about.html')
+	return render_template('radar.html')
 
 if __name__ == '__main__':
 	app.run(debug=True)
