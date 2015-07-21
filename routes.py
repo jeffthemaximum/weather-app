@@ -1,10 +1,15 @@
 import urllib2
+import cStringIO
 import json
 import time
+from PIL import Image
 from datetime import datetime
 from time import mktime
 from flask import Flask, render_template, request
 import pudb
+from tempfile import NamedTemporaryFile
+from shutil import copyfileobj
+from os import remove
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -67,9 +72,22 @@ def home():
 							local = location,
 							error = error)
 
-@app.route('/radar')
-def about():
-	return render_template('radar.html')
+@app.route('/radar', methods=['POST', 'GET'])
+def radar():
+
+	error = ""
+
+	if request.method == 'GET':
+		location = str(10025)
+	elif request.method == 'POST':
+		if request.form['usr_zip'] not in possible_zips_string:
+			error = "That's not a valid zipcode, silly!"
+			location = str(10025)
+		else:
+			location = request.form['usr_zip']
+
+	return render_template('radar.html',
+							local = location)
 
 if __name__ == '__main__':
 	app.run(debug=True)

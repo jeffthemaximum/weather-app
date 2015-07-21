@@ -2,5 +2,15 @@
 
 {% block content %}
 	<h2>Radar</h2>
-	<p>This is an About page for my Flask app</p>
+	<h3>Checkout the current radar for {{ local }}</h3>
+	{% if error != "" %}
+	<h3>{{ error }}</h3>
+	{% endif %}
+	<h3>Enter your zip to see your weathers:<form action="/radar", id="zip", method='POST'>
+		<input type="text" name="usr_zip"><br>
+		<input type="submit" value="submit">
+	</form></h3>
+	<div class="container">
+		<img src="http://api.wunderground.com/api/4263ad1dd9572760/animatedradar/q/MI/{{ local }}.gif?newmaps=1&timelabel=1&timelabel.y=10&num=5&delay=50">
+	</div>
 {% endblock %}
