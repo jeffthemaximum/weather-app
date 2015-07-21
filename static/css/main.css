@@ -3,12 +3,36 @@ body {
   padding: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #444;
+  margin-bottom: 0px;
 }
  
 /*
  * Create dark grey header with a white logo
  */
-  
+footer {
+  height:23px;
+  background-color:#2B2B2B;
+  bottom:0px;
+  left:0px;
+  right:0px;
+  margin-bottom:0px;
+}
+
+footer p {
+  margin: 0;
+  padding: 0;
+  display: inline;
+  color: white;
+}
+
+footer p.footer_name {
+  float: left;
+}
+
+footer p.footer_email {
+  float: right;
+}
+
 header {
   background-color: #2B2B2B;
   height: 35px;
