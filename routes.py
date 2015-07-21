@@ -1,15 +1,10 @@
 import urllib2
-import cStringIO
 import json
 import time
-from PIL import Image
 from datetime import datetime
 from time import mktime
 from flask import Flask, render_template, request
 import pudb
-from tempfile import NamedTemporaryFile
-from shutil import copyfileobj
-from os import remove
 
 app = Flask(__name__)
 app.config.from_object('config')
