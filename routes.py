@@ -50,9 +50,7 @@ def home():
 	response_json = fetch_json(location)
 
 	#setup empty array to fill in with weather json data
-	weather_list = range(0,7)
-	for i in range(0,7):
-		weather_list[i] = []
+	weather_list = []
 
 	#iterate over json data, and fill next seven days into weather_list array
 	for i in range(0,7):
@@ -62,7 +60,7 @@ def home():
 		weather = response_json["forecast"]["simpleforecast"]["forecastday"][i]["conditions"]
 		weather_pic = weather_desc[weather]
 		#populate weather list with data for each day
-		weather_list[i] = [day, str(high), str(low), weather, weather_pic]
+		weather_list.append([day, str(high), str(low), weather, weather_pic])
 
 	#return weather_list to home.html so that home.html can make table
 	return render_template('home.html', 
