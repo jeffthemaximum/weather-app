@@ -8,10 +8,6 @@ import pudb
 
 app = Flask(__name__)
 app.config.from_object('config')
-possible_zips = range(10000, 100000)
-possible_zips_string = []
-for num in possible_zips:
-	possible_zips_string.append(str(num))
 
 def weather_images():
 	return {"Clear": "../static/img/start-cycling-gl.jpg", 
@@ -28,31 +24,10 @@ def fetch_json(location):
 	response = urllib2.urlopen('http://api.wunderground.com/api/4263ad1dd9572760/forecast10day/q/' + location + '.json')
 	return json.loads(response.read())
 
-@app.route('/', methods=['POST', 'GET'])
-def home():
-	#pu.db
-	#set location to nyc by default, or set location to user-entered value
-	error = ""
-
-	if request.method == 'GET':
-		location = str(10025)
-	elif request.method == 'POST':
-		if request.form['usr_zip'] not in possible_zips_string:
-			error = "That's not a valid zipcode, silly!"
-			location = str(10025)
-		else:
-			location = request.form['usr_zip']
-
-	#dict with links to image files
-	weather_desc = weather_images()
-
-	#get json data from wunderground
-	response_json = fetch_json(location)
-
+def create_seven_day_forecast_list(response_json, weather_desc):
 	#setup empty array to fill in with weather json data
 	weather_list = []
 
-	#iterate over json data, and fill next seven days into weather_list array
 	for i in range(0,7):
 		day = response_json["forecast"]["simpleforecast"]["forecastday"][i]["date"]["weekday"]
 		high = response_json["forecast"]["simpleforecast"]["forecastday"][i]["high"]["fahrenheit"]
@@ -61,6 +36,44 @@ def home():
 		weather_pic = weather_desc[weather]
 		#populate weather list with data for each day
 		weather_list.append([day, str(high), str(low), weather, weather_pic])
+
+	return weather_list
+
+def set_location_and_error(req_method, usr_zip):
+	possible_zips = range(10000, 100000)
+	possible_zips_string = []
+	for num in possible_zips:
+		possible_zips_string.append(str(num))
+
+	if req_method == 'GET':
+		return {'location': str(10025), 'error': ""}
+	elif req_method == 'POST':
+		if usr_zip not in possible_zips_string:
+			return {'location': str(10025), 'error': "That's not a valid zipcode, silly!"}
+		else:
+			return {'location': str(10025), 'error': ""}
+
+@app.route('/', methods=['POST', 'GET'])
+def home():
+	#set location to nyc by default, or set location to user-entered value
+	method = request.method
+	try:
+		usr_zip = request.form['usr_zip']
+	except:
+		usr_zip = ""
+
+	location_and_error_dict = set_location_and_error(request.method, usr_zip)
+	location = location_and_error_dict['location']
+	error = location_and_error_dict['error']
+
+	#dict with links to image files
+	weather_desc = weather_images()
+
+	#get json data from wunderground
+	response_json = fetch_json(location)
+
+	#iterate over json data, and fill next seven days into weather_list array
+	weather_list = create_seven_day_forecast_list(response_json, weather_desc)
 
 	#return weather_list to home.html so that home.html can make table
 	return render_template('home.html', 
@@ -83,7 +96,8 @@ def radar():
 			location = request.form['usr_zip']
 
 	return render_template('radar.html',
-							local = location)
+							local = location,
+							error = error)
 
 if __name__ == '__main__':
 	app.run(debug=True)
