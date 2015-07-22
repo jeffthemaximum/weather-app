@@ -13,6 +13,21 @@ possible_zips_string = []
 for num in possible_zips:
 	possible_zips_string.append(str(num))
 
+def weather_images():
+	return {"Clear": "../static/img/start-cycling-gl.jpg", 
+			"Rain": "../static/img/rain-cycling.jpg", 
+			"Clouds": "../static/img/clouds.jpg",
+			"Overcast": "../static/img/overcast.png",
+			"Partly Cloudy": "../static/img/partcloud.jpg",
+			"Chance of a Thunderstorm": "../static/img/thunderstorm.jpg",
+			"Mostly Cloudy": "../static/img/mostly-cloudy.jpg",
+			"Thunderstorm": "../static/img/actual-thunderstorm.jpg",
+			"Chance of Rain": "../static/img/pitt.jpg"}
+
+def fetch_json(location):
+	response = urllib2.urlopen('http://api.wunderground.com/api/4263ad1dd9572760/forecast10day/q/' + location + '.json')
+	return json.loads(response.read())
+
 @app.route('/', methods=['POST', 'GET'])
 def home():
 	#pu.db
@@ -29,22 +44,10 @@ def home():
 			location = request.form['usr_zip']
 
 	#dict with links to image files
-	weather_desc = {"Clear": "../static/img/start-cycling-gl.jpg", 
-					"Rain": "../static/img/rain-cycling.jpg", 
-					"Clouds": "../static/img/clouds.jpg",
-					"Overcast": "../static/img/overcast.png",
-					"Partly Cloudy": "../static/img/partcloud.jpg",
-					"Chance of a Thunderstorm": "../static/img/thunderstorm.jpg",
-					"Mostly Cloudy": "../static/img/mostly-cloudy.jpg",
-					"Thunderstorm": "../static/img/actual-thunderstorm.jpg",
-					"Chance of Rain": "../static/img/pitt.jpg"}
-
-	#city_name = raw_input("please enter your city: ")
-	#country_code = raw_input("please enter your county: ")
+	weather_desc = weather_images()
 
 	#get json data from wunderground
-	response = urllib2.urlopen('http://api.wunderground.com/api/4263ad1dd9572760/forecast10day/q/' + location + '.json')
-	response_json = json.loads(response.read())
+	response_json = fetch_json(location)
 
 	#setup empty array to fill in with weather json data
 	weather_list = range(0,7)
