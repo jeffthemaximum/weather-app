@@ -39,24 +39,24 @@ def create_seven_day_forecast_list(response_json, weather_desc):
 
 	return weather_list
 
-def set_location_and_error(req_method, usr_zip):
+def create_possible_zipcode_list():
 	possible_zips = range(10000, 100000)
-	possible_zips_string = []
-	for num in possible_zips:
-		possible_zips_string.append(str(num))
+	possible_zips = [str(num) for num in possible_zips]
+	return possible_zips
 
+def set_location_and_error(req_method, usr_zip):
+	possible_zips_string = create_possible_zipcode_list()
 	if req_method == 'GET':
 		return {'location': str(10025), 'error': ""}
 	elif req_method == 'POST':
 		if usr_zip not in possible_zips_string:
 			return {'location': str(10025), 'error': "That's not a valid zipcode, silly!"}
 		else:
-			return {'location': str(10025), 'error': ""}
+			return {'location': usr_zip, 'error': ""}
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
 	#set location to nyc by default, or set location to user-entered value
-	method = request.method
 	try:
 		usr_zip = request.form['usr_zip']
 	except:
@@ -83,17 +83,14 @@ def home():
 
 @app.route('/radar', methods=['POST', 'GET'])
 def radar():
+	try:
+		usr_zip = request.form['usr_zip']
+	except:
+		usr_zip = ""
 
-	error = ""
-
-	if request.method == 'GET':
-		location = str(10025)
-	elif request.method == 'POST':
-		if request.form['usr_zip'] not in possible_zips_string:
-			error = "That's not a valid zipcode, silly!"
-			location = str(10025)
-		else:
-			location = request.form['usr_zip']
+	location_and_error_dict = set_location_and_error(request.method, usr_zip)
+	location = location_and_error_dict['location']
+	error = location_and_error_dict['error']
 
 	return render_template('radar.html',
 							local = location,
