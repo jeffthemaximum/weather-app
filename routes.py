@@ -4,10 +4,11 @@ import time
 import pudb
 from datetime import datetime
 from time import mktime
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
+import os
+import models
 
 app = Flask(__name__)
-app.config.from_object('config')
 
 def weather_images():
 	return {"Clear": "../static/img/start-cycling-gl.jpg", 
@@ -98,5 +99,18 @@ def radar():
 							local = location,
 							error = error)
 
+@app.route('/signup', methods=['POST', 'GET'])
+def signup():
+	if request.method == 'POST':
+		zip_code = request.form['usr_zip']
+		email = request.form['email']
+		models.insert_email_and_zip(zip_code, email)
+		return redirect(url_for('home'))
+
+	return render_template('signup.html')
+
 if __name__ == '__main__':
 	app.run(debug=True)
+
+from config import *
+db.create_all()
