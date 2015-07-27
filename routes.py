@@ -1,10 +1,10 @@
 import urllib2
 import json
 import time
+import pudb
 from datetime import datetime
 from time import mktime
 from flask import Flask, render_template, request
-import pudb
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -56,17 +56,18 @@ def set_location_and_error(req_method, usr_zip):
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
-	#set location to nyc by default, or set location to user-entered value
+	#get zip from form or set to empty string
 	try:
 		usr_zip = request.form['usr_zip']
 	except:
 		usr_zip = ""
 
+	#set usr location and catch possible zipcode errors
 	location_and_error_dict = set_location_and_error(request.method, usr_zip)
 	location = location_and_error_dict['location']
 	error = location_and_error_dict['error']
 
-	#dict with links to image files
+	#get image files
 	weather_desc = weather_images()
 
 	#get json data from wunderground
@@ -88,6 +89,7 @@ def radar():
 	except:
 		usr_zip = ""
 
+	#set usr location and catch possible zipcode errors
 	location_and_error_dict = set_location_and_error(request.method, usr_zip)
 	location = location_and_error_dict['location']
 	error = location_and_error_dict['error']
