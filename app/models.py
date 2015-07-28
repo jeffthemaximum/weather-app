@@ -65,7 +65,7 @@ class User(object):
         query = "INSERT INTO users (firstname, lastname, email, pwdhash, zipcode) VALUES (%s, %s, %s, %s, %s);"
         data = (self.firstname, self.lastname, self.email, self.pwdhash, self.zipcode)
         cur.execute(query, data)
-        con.commit()
+        conn.commit()
 
 
 

@@ -2,13 +2,12 @@ import urllib2
 import json
 import time
 import pudb
+from app import app
 from datetime import datetime
 from time import mktime
 from flask import Flask, render_template, request, redirect, url_for, session
 import os
 from models import *
-
-app = Flask(__name__)
 
 def weather_images():
 	return {"Clear": "../static/img/start-cycling-gl.jpg", 
@@ -122,6 +121,3 @@ def signup():
 		
 	elif request.method == 'GET':
 		return render_template('signup.html')
-
-if __name__ == '__main__':
-	app.run(debug=True)
