@@ -4,9 +4,9 @@ import time
 import pudb
 from datetime import datetime
 from time import mktime
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 import os
-import models
+from models import *
 
 app = Flask(__name__)
 
@@ -102,15 +102,26 @@ def radar():
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
 	if request.method == 'POST':
-		zip_code = request.form['usr_zip']
+		#get form inputs
+		firstname = request.form['firstname']
+		lastname = request.form['lastname']
+		zipcode = request.form['zipcode']
 		email = request.form['email']
-		models.insert_email_and_zip(zip_code, email)
-		return redirect(url_for('home'))
+		password = request.form['password']
+		#create new user
+		new_user = User(firstname, lastname, email, password, zipcode)
+		#add new user to db (function from models.py)
+		new_user.add_to_db()
 
-	return render_template('signup.html')
+		#set session object to remember user email
+		#session takes care of hashing email into an encrypted ID and storing it in a cookie in the user's browser
+		session['email'] = new_user.email
+
+		#return (1) signin user (2) redirect to profile
+		return redirect(url_for('home'))
+		
+	elif request.method == 'GET':
+		return render_template('signup.html')
 
 if __name__ == '__main__':
 	app.run(debug=True)
-
-from config import *
-db.create_all()
