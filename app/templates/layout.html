@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <strong><link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"></strong>
+    <script type = "text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <title>Jeff Weather</title>    
+  </head>
+  <body>
+
+  <header>
+    <div class="container">
+      <h1 class="logo">Flask App</h1>
+      <nav>
+        <ul class="menu">
+          <li><a href="{{ url_for('home') }}">Home</a></li>
+          <li><a href="{{ url_for('radar') }}">Radar</a></li>
+          {% if 'email' in session %}
+          <li><a href="{{ url_for('profile') }}">Profile</a></li>
+          <li><a href="{{ url_for('signout') }}">Sign Out</a></li>
+          {% else %}
+          <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+          <li><a href="{{ url_for('signin') }}">Sign In</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    {% block content %}
+    {% endblock %}
+  </div>
+
+  </body>
+
+  <footer>
+    <div class="container">
+        <p class="footer_name">Jeff Maxim</p>
+        <p class="footer_email">Contact information: <a href="mailto:frey.maxim@gmail.com">
+        frey.maxim@gmail.com</a></p>
+    </div>
+  </footer>
+</html>

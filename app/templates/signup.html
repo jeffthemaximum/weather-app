@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+	{% if error != "" %}
+	<h3>{{ error }}</h3>
+	{% endif %}
+	<h3 id="signup-errors"></h3>
+	<h3>Signup to create your account:<form action="/signup", id="sign-up", method='POST'>
+		<p>Your First Name: <input type="text" name="firstname" required><br></p>
+		<p>Your Last Name: <input type="text" name="lastname" required><br></p>
+		<p>Your Zip Code: <input type="number" name="zipcode" required><br></p>
+		<p>Your Email: <input type="email" name="email"><br></p>
+		<p>Your Password: <input id = "password_signup" type="password" name="password" required><br></p>
+		<p>Your Password (again): <input id = "password_signup_confirm" type="password" name="password_confirm" required><br></p>
+		<input type="submit" value="submit">
+	</form></h3>
+{% endblock %}
