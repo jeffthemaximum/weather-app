@@ -160,3 +160,11 @@ def signin():
 			return render_template('profile.html')
 	elif request.method == 'GET':
 		return render_template('signin.html')
+
+@app.route('/signout')
+def signout():
+	if 'email' not in session:
+		return redirect(url_for('signin'))
+
+	session.pop('email', None)
+	return redirect(url_for('home'))
