@@ -46,6 +46,7 @@ d6idunnmsvk671(> zipcode INT NOT NULL);
 
 
 class User(object):
+
     def __init__(self, firstname, lastname, email, password, zipcode):
         self.firstname = firstname.title()
         self.lastname = lastname.title()
@@ -67,9 +68,33 @@ class User(object):
         cur.execute(query, data)
         conn.commit()
 
+    def check_for_duplicate_email(self):
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM users WHERE email = %(email)s", {'email': self.email})
+        email = cur.fetchone()
+        if email is None:
+            print "true!"
+            return True
+        else:
+            print "false!"
+            return False
+
+    @staticmethod
+    #looks up user in postgres by email, returns new user object
+    def lookup_email(email):
+        cur = conn.cursor()
+        try:
+            cur.execute("SELECT * FROM users WHERE email = %(email)s", {'email': email})
+            sql_user_data = cur.fetchone()
+            new_user = User(sql_user_data[1], sql_user_data[2], sql_user_data[3], sql_user_data[4], sql_user_data[5])
+            #set pwdhash to correct value
+            new_user.pwdhash = sql_user_data[4]
+            return new_user
+        except:
+            return None
 
 
-
+'''
 def insert_email_and_zip(zip_code, email):
     #pu.db
     cur = conn.cursor()
@@ -92,3 +117,4 @@ def update_hits(key):
         cur = con.cursor()
         cur.execute("UPDATE link SET hits = (hits + 1) WHERE key=key")
         con.commit()
+'''

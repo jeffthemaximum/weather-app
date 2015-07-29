@@ -1,11 +1,16 @@
 {% extends "layout.html" %}
 {% block content %}
-	<h3>Enter your zip to see your weathers:<form action="/signup", id="sign-up", method='POST'>
-		<p>Your First Name: <input type="text" name="firstname"><br></p>
-		<p>Your Last Name: <input type="text" name="lastname"><br></p>
-		<p>Your Zip Code: <input type="number" name="zipcode"><br></p>
+	{% if error != "" %}
+	<h3>{{ error }}</h3>
+	{% endif %}
+	<h3 id="signup-errors"></h3>
+	<h3>Signup to create your account:<form action="/signup", id="sign-up", method='POST'>
+		<p>Your First Name: <input type="text" name="firstname" required><br></p>
+		<p>Your Last Name: <input type="text" name="lastname" required><br></p>
+		<p>Your Zip Code: <input type="number" name="zipcode" required><br></p>
 		<p>Your Email: <input type="email" name="email"><br></p>
-		<p>Your Password: <input type="password" name="password"><br></p>
+		<p>Your Password: <input id = "password_signup" type="password" name="password" required><br></p>
+		<p>Your Password (again): <input id = "password_signup_confirm" type="password" name="password_confirm" required><br></p>
 		<input type="submit" value="submit">
 	</form></h3>
 {% endblock %}
